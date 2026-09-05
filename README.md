@@ -23,8 +23,8 @@ folder.
 
 ```powershell
 chopit add gs 'git status' -Description 'Show Git status'  # create shortcut
-gs                                                        # use shortcut
-chopit                                                    # optional: open menu
+gs                                                         # use shortcut
+chopit                                                     # optional: open menu
 ```
 
 From CMD, use double quotes:
