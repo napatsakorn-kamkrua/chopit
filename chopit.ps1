@@ -488,23 +488,40 @@ function Uninstall-Chopit {
 }
 
 function Show-ChopitMenu {
+  $innerWidth = 60
+  $contentWidth = $innerWidth - 4
+  $border = '+' + ('-' * $innerWidth) + '+'
+  function Write-ChopitMenuRow {
+    param([string]$Text, [ConsoleColor]$Color = [ConsoleColor]::Gray)
+    $line = ('' + $Text) -replace '[\r\n]+', ' '
+    if ($line.Length -gt $contentWidth) { $line = $line.Substring(0, $contentWidth - 3) + '...' }
+    Write-Host ('|  ' + $line.PadRight($contentWidth) + '  |') -ForegroundColor $Color
+  }
   while ($true) {
     Clear-Host
-    Write-Output '== chopit =='
-    Write-Output ''
     $store = Get-ChopitStore
     $keys = @($store.Keys)
-    if ($store.Count -eq 0) { Write-Output '  (none yet — press a to add)' }
+    Write-Host $border -ForegroundColor DarkCyan
+    Write-ChopitMenuRow 'CHOPIT COMMAND CENTER' Cyan
+    $countLabel = if ($store.Count -eq 1) { '1 shortcut available' } else { "$($store.Count) shortcuts available" }
+    Write-ChopitMenuRow $countLabel DarkGray
+    Write-Host $border -ForegroundColor DarkCyan
+    if ($store.Count -eq 0) {
+      Write-ChopitMenuRow '(none yet - press A to add)' DarkGray
+    }
     else {
       for ($i = 0; $i -lt $keys.Count; $i++) {
         $entry = $store[$keys[$i]]
-        $suffix = if ([string]::IsNullOrWhiteSpace($entry.Description)) { '' } else { " - $($entry.Description)" }
-        Write-Output ("  {0}. {1}{2}`n     {3}" -f ($i + 1), $keys[$i], $suffix, $entry.Command)
+        $description = if ([string]::IsNullOrWhiteSpace($entry.Description)) { 'No description' } else { $entry.Description }
+        Write-ChopitMenuRow ("{0,2}  {1,-14} {2}" -f ($i + 1), $keys[$i], $description) White
+        Write-ChopitMenuRow ("     $($entry.Command)") DarkGray
       }
     }
-    Write-Output ''
-    Write-Output '[a]dd  [e]dit  [d]elete  [t]est  [r]eload  [l]ist path  [o]pen  e[x]port  [i]mport  [?]help  [q]uit'
-    $choice = (('' + (Read-Host 'Choice')).Trim().ToLowerInvariant())
+    Write-Host $border -ForegroundColor DarkCyan
+    Write-ChopitMenuRow '[A] Add [E] Edit [D] Delete [T] Test [R] Reload [L] Path' Yellow
+    Write-ChopitMenuRow '[O] Open [X] Export [I] Import [?] Help [Q] Quit' Yellow
+    Write-Host $border -ForegroundColor DarkCyan
+    $choice = (('' + (Read-Host 'Select an action or shortcut number')).Trim().ToLowerInvariant())
     switch ($choice) {
       'a' {
         Add-ChopitShortcut -Name (Read-Host 'Shortcut name (e.g. mytool)') -Command (Read-Host 'Full command') -Description (Read-Host 'Description (optional)')
@@ -531,7 +548,12 @@ function Show-ChopitMenu {
       }
       '?' { Write-Output $ChopitUsage }
       'q' { return }
-      default { Write-Output 'Unknown choice.' }
+      default {
+        if ($choice -match '^\d+$' -and [int]$choice -gt 0 -and [int]$choice -le $keys.Count) {
+          Invoke-ChopitShortcut -Name $keys[[int]$choice - 1]
+        }
+        else { Write-Output 'Unknown choice. Enter a shortcut number or a menu key.' }
+      }
     }
     Read-Host 'Enter to continue' | Out-Null
   }
