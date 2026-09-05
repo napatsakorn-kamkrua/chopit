@@ -22,9 +22,9 @@ folder.
 ## Quick Start
 
 ```powershell
-chopit add gs 'git status' -Description 'Show Git status'
-gs
-chopit
+chopit add gs 'git status' -Description 'Show Git status'  # create shortcut
+gs                                                        # use shortcut
+chopit                                                    # optional: open menu
 ```
 
 From CMD, use double quotes:
@@ -33,6 +33,9 @@ From CMD, use double quotes:
 chopit add gs "git status" -Description "Show Git status"
 gs
 ```
+
+The final `chopit` in the PowerShell example is optional. It opens the
+interactive menu; it is not needed to run `gs`.
 
 ## Common Commands
 
