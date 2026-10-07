@@ -1,6 +1,6 @@
 # chopit
 
-PowerShell shortcuts with a CMD launcher.
+Short names for long commands. PowerShell + CMD on Windows, bash/zsh on Linux.
 
 Turn long commands into short names:
 
@@ -10,7 +10,7 @@ git status  ->  gs
 
 ## Install
 
-Run this once in PowerShell. No clone or file copying is required:
+Windows: run this once in PowerShell. No clone or file copying is required:
 
 ```powershell
 irm https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.ps1 | iex
@@ -18,6 +18,15 @@ irm https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.ps
 
 Restart PowerShell and CMD. Then `chopit` and your shortcuts work from any
 folder.
+
+Linux: run this once in a terminal (needs `python3` and `curl`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.sh | bash
+```
+
+Restart the shell (or run `exec $SHELL`). See the
+[Linux guide](docs/LINUX.md) for details.
 
 ## Quick Start
 
@@ -54,20 +63,31 @@ chopit uninstall          Uninstall chopit, preserving shortcuts
 
 ## Files
 
+Windows:
+
 ```text
 %APPDATA%\chopit\shortcuts.json       Your shortcuts
 %LOCALAPPDATA%\chopit\app\            Downloaded application
 %LOCALAPPDATA%\chopit\bin\            PATH launchers and shortcut wrappers
 ```
 
+Linux:
+
+```text
+~/.config/chopit/shortcuts.json       Your shortcuts
+~/.local/share/chopit/app/            Downloaded application
+~/.local/share/chopit/bin/            PATH launchers and shortcut wrappers
+```
+
 ## Full Documentation
 
-See the [full usage guide](docs/USAGE.md) for installation details, the menu,
+See the [full usage guide](docs/USAGE.md) (Windows) or the
+[Linux guide](docs/LINUX.md) for installation details, the menu,
 all options, CMD behavior, backups, moving to another PC, troubleshooting, and
 security notes.
 
 ## Security
 
 The install command executes a script downloaded from GitHub. Review the
-source first if you do not want to pipe remote code into PowerShell. Shortcuts
-also execute PowerShell commands with your user permissions.
+source first if you do not want to pipe remote code into PowerShell or bash.
+Shortcuts also execute shell commands with your user permissions.
