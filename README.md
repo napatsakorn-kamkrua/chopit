@@ -22,10 +22,10 @@ folder.
 Linux: run this once in a terminal (needs `python3` and `curl`):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.sh | bash && exec "$SHELL"
 ```
 
-Restart the shell (or run `exec $SHELL`). See the
+The shell restarts by itself, and `chopit` is ready. See the
 [Linux guide](docs/LINUX.md) for details.
 
 ## Quick Start

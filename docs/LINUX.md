@@ -10,7 +10,7 @@ Shortcut commands are shell code, not PowerShell.
 Run this one command. No cloning or copying is required:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/napatsakorn-kamkrua/chopit/main/install.sh | bash && exec "$SHELL"
 ```
 
 It needs `python3` and `curl`. The installer:
@@ -21,11 +21,8 @@ It needs `python3` and `curl`. The installer:
 - Adds a managed loader block to `~/.bashrc`, and to `~/.zshrc` if it exists.
 - Backs up each rc file before changing it.
 
-Run it again at any time to update chopit. Then restart the shell, or run:
-
-```bash
-exec $SHELL
-```
+After a successful install, `exec "$SHELL"` restarts your shell so `chopit`
+works at once. Run the same line again at any time to update chopit.
 
 ## Quick Start
 
